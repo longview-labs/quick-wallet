@@ -17,10 +17,10 @@ const sign_message = async (
   const dataToSign = new Uint8Array(signData);
 
   // hash the message
-  const hash = await crypto.subtle.digest(options.hashAlgorithm, dataToSign);
+  const hash = await window.crypto.subtle.digest(options.hashAlgorithm, dataToSign);
 
   // get signing key using the jwk
-  const cryptoKey = await crypto.subtle.importKey(
+  const cryptoKey = await window.crypto.subtle.importKey(
     "jwk",
     keyfile,
     {
@@ -33,7 +33,7 @@ const sign_message = async (
 
   // hashing 2 times ensures that the app is not draining the user's wallet
   // credits to Arweave.app
-  const signature = await crypto.subtle.sign(
+  const signature = await window.crypto.subtle.sign(
     { name: "RSA-PSS", saltLength: 32 },
     cryptoKey,
     hash

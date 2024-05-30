@@ -7,7 +7,7 @@ const signature = async (
 ) : Promise<number[]> => {
   const keyfile = await getKeyfile();
 
-  const cryptoKey = await crypto.subtle.importKey(
+  const cryptoKey = await window.crypto.subtle.importKey(
     "jwk",
     keyfile,
     {
@@ -24,7 +24,7 @@ const signature = async (
   const dataToSign = new Uint8Array(data);
 
   // grab signature
-  const signature = await crypto.subtle.sign(algorithm, cryptoKey, dataToSign);
+  const signature = await window.crypto.subtle.sign(algorithm, cryptoKey, dataToSign);
 
   // remove wallet from memory
   freeDecryptedWallet(keyfile);
