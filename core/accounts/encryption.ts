@@ -1,3 +1,5 @@
+// credit to ArConnect: https://github.com/arconnectio/ArConnect/blob/production/src/wallets/encryption.ts
+
 import type { JWKInterface } from "arweave/web/lib/wallet";
 
 // salt and iv lengths
