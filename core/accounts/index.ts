@@ -4,7 +4,7 @@ import store from 'store';
 
 import { encryptWallet, decryptWallet, freeDecryptedWallet } from './encryption';
 
-export const TEST_PASSWORD = "test1234@";
+export const DECRYPTION_KEY = "test1234@";
 
 export interface QuickWalletAccount {
   address: string,
@@ -28,7 +28,6 @@ const arweave = new Arweave({
  * "freeDecryptedWallet(activekeyfile.keyfile)" function.
  */
 export const getKeyfile = async () : Promise<JWKInterface> => {
-  const decryptionKey = TEST_PASSWORD;
   let account = getAccount();
 
   // no account in storage
@@ -37,7 +36,7 @@ export const getKeyfile = async () : Promise<JWKInterface> => {
   }
 
   // decrypt keyfile
-  const decryptedKeyfile = await decryptWallet(account.keyfile, decryptionKey);
+  const decryptedKeyfile = await decryptWallet(account.keyfile, DECRYPTION_KEY);
 
   return decryptedKeyfile;
 };
@@ -50,8 +49,24 @@ export const getPublicKey = async () : Promise<string> => {
     account = await generateAccount();
   }
 
+  const keyfile = await decryptWallet(account.keyfile, DECRYPTION_KEY);
+  const publicKey = keyfile.n;
+
+  // free wallet in memory
+  freeDecryptedWallet(keyfile);
+
+  return publicKey;
+};
+
+export const getAddress = async () : Promise<string> => {
+  let account = getAccount();
+
+  if (!account) {
+    account = await generateAccount();
+  }
+
   return account.address;
-}
+};
 
 /**
  * get account from the browser local storage
@@ -64,7 +79,7 @@ export const setAccount = (account: QuickWalletAccount) => {
 
 export const createAccountWithWallet = async (wallet: JWKInterface) : Promise<QuickWalletAccount> => {
   const address = await arweave.wallets.jwkToAddress(wallet);
-  const keyfile = await encryptWallet(wallet, TEST_PASSWORD);
+  const keyfile = await encryptWallet(wallet, DECRYPTION_KEY);
 
   // construct wallet account
   const account = {

@@ -28,14 +28,14 @@ const sign_data_item = async (dataItem: any) : Promise<Array<number>> => {
 
   const keyfile = await getKeyfile();
 
-  // create bundlr tx as a dataB entry
+  // create bundlr tx as a data entry
   const dataSigner = new ArweaveSigner(keyfile);
   const dataEntry = createData(binaryData, dataSigner, options);
 
   // sign item
   await dataEntry.sign(dataSigner);
 
-  // remove keyfile
+  // free keyfile from memory
   freeDecryptedWallet(keyfile);
 
   return Array.from<number>(dataEntry.getRaw());

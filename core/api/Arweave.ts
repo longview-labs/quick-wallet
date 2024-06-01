@@ -1,3 +1,5 @@
+import Transaction from "arweave/web/lib/transaction";
+
 export type Override<T, U> = Omit<T, keyof U> & U
 
 interface DataItemCreateOptions {
@@ -23,6 +25,11 @@ export interface ArweaveInterface {
 	connect(): any,
 	signature(): any,
 	getPublicKey(): Promise<string>
+	getActivePublicKey(): Promise<string>
+	getActiveAddress(): Promise<string>
+	getPermissions(): Promise<Array<string>>
+
+	sign(transaction: Transaction): Promise<Transaction>
 	signDataItem(tx: DataItemParamsUnsigned): Promise<Array<number>>
 	signMessage(message: ArrayBufferView, options: SignMessageOptions): Promise<ArrayBufferView>
 }

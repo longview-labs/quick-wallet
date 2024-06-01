@@ -1,19 +1,22 @@
 import type { ArweaveInterface } from "./Arweave";
 
 import get_public_key from "./modules/get_public_key";
+import get_permissions from "./modules/get_permissions";
+import get_active_address from "./modules/get_active_address";
 import sign_data_item from "./modules/sign_data_item";
 import signature from "./modules/signature";
-import sign_message from './modules/sign_message';
+import sign_message from "./modules/sign_message";
+import sign from "./modules/sign";
 
 type ModuleFunction<ResultType> = (
   ...params: any[]
 ) => Promise<ResultType> | ResultType;
 
 const MODULE_WRAPPER = (func: ModuleFunction<any>) => {
-	return (...params) => {
+	return (...params) : (Promise<any>) => {
 		return Promise.resolve(func(...params)).catch(e => {
 			console.error("Error when executing QuickWallet function", e);
-		})
+		});
 	}
 }
 
@@ -24,6 +27,12 @@ const QuickWallet : ArweaveInterface = {
 	connect: MODULE_WRAPPER(get_public_key),
 	signDataItem: MODULE_WRAPPER(sign_data_item),
 	getPublicKey: MODULE_WRAPPER(get_public_key),
+	getPermissions: MODULE_WRAPPER(get_permissions),
+
+	getActiveAddress: MODULE_WRAPPER(get_active_address),
+	getActivePublicKey: MODULE_WRAPPER(get_public_key),
+
+	sign: MODULE_WRAPPER(sign),
 	signature: MODULE_WRAPPER(signature),
 	signMessage: MODULE_WRAPPER(sign_message),
 };

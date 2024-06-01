@@ -1,17 +1,9 @@
 <script setup>
 import { useAccountsStore } from '../stores';
 import { shortAddr } from '../../utils';
-import { decryptWallet, freeDecryptedWallet } from '../../core/accounts/encryption';
-import { TEST_PASSWORD } from '../../core/accounts';
 
 const accounts = useAccountsStore();
 const account = accounts.activeAccount;
-
-const updateProfile = async () => {
-  const jwk = await decryptWallet(account.keyfile, TEST_PASSWORD);
-  freeDecryptedWallet(jwk);
-  console.log(result);
-}
 </script>
 
 <template>

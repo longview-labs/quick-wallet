@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useAccountsStore, useGlobalStore } from '../stores';
 import { decryptWallet, freeDecryptedWallet } from '../../core/accounts/encryption';
-import { TEST_PASSWORD } from '../../core/accounts';
+import { getKeyfile } from '../../core/accounts';
 import { downloadFile } from '../../utils';
 
 const accountStore = useAccountsStore();
@@ -32,7 +32,7 @@ const downloadLatestKeyfile = async () => {
   const [last] = accounts.value.slice(-1);
   if (!last) return;
 
-  const jwk = await decryptWallet(last.keyfile, TEST_PASSWORD);
+  const jwk = await getKeyfile();
   const content = JSON.stringify(jwk);
   const blob = new Blob([content], {type: "application/json"});
   const blobUrl  = URL.createObjectURL(blob);
