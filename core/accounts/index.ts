@@ -12,6 +12,8 @@ export interface QuickWalletAccount {
   backedup: boolean,
 };
 
+let generating = false;
+
 const arweave = new Arweave({
   host: "arweave.net",
   port: 443,
@@ -95,6 +97,9 @@ export const createAccountWithWallet = async (wallet: JWKInterface) : Promise<Qu
 };
 
 export const generateAccount = async () : Promise<QuickWalletAccount> => {
+  if (generating) throw new Error("Account generation in progress...");
+
+  generating = true;
   const jwk = await arweave.wallets.generate();
   const account = await createAccountWithWallet(jwk);
 
