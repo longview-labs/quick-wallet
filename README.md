@@ -1,4 +1,6 @@
-# quick-wallet
+# Quick Wallet
+![quick-wallet](./assets/quick-wallet.png)
+
 Headless Arweave browser wallet
 
 ## Installation
@@ -32,4 +34,23 @@ const message_id = await message({
     { name: "Action", value: `<----- Action Name ---->` },
   ],
 });
+```
+
+#### Donwload wallet key file
+
+```ts
+import { downloadFile } from 'quick-wallet/utils';
+import { getKeyfile } from 'quick-wallet/core/accounts';
+import { freeDecryptedWallet } from 'quick-wallet/core/accounts/encryption';
+
+const jwk = await getKeyfile();
+const content = JSON.stringify(jwk);
+const blob = new Blob([content], {type: "application/json"});
+const blobUrl  = URL.createObjectURL(blob);
+
+// remember to free the decrypted wallet from memory for security purposes
+freeDecryptedWallet(jwk);
+
+// download wallet
+downloadFile(blobUrl, 'your-wallet.json');
 ```
