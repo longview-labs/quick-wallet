@@ -9,7 +9,9 @@ export const DECRYPTION_KEY = "test1234@";
 export interface QuickWalletAccount {
   address: string,
   keyfile: string,
-  backedup: boolean,
+
+  /** @deprecated backedup field deprecated */
+  backedup?: boolean,
 };
 
 let generating = false;
@@ -87,7 +89,6 @@ export const createAccountWithWallet = async (wallet: JWKInterface) : Promise<Qu
   const account = {
     address,
     keyfile,
-    backedup: false,
   }
   
   // save account info to storage
@@ -96,6 +97,9 @@ export const createAccountWithWallet = async (wallet: JWKInterface) : Promise<Qu
   return account;
 };
 
+/**
+ * Generates a new quick wallet account and replace the old one
+ */
 export const generateAccount = async () : Promise<QuickWalletAccount> => {
   if (generating) throw new Error("Account generation in progress...");
 
@@ -107,4 +111,17 @@ export const generateAccount = async () : Promise<QuickWalletAccount> => {
   freeDecryptedWallet(jwk);
 
   return account;
-}
+};
+
+/**
+ * Import an Arweave wallet
+ */
+export const importWallet = async (wallet: JWKInterface) : Promise<QuickWalletAccount> => {
+  // parse json if wallet provided 
+  if (typeof wallet === 'string') {
+    wallet = JSON.parse(wallet);
+  }
+
+  const account = await createAccountWithWallet(wallet);
+  return account;
+};
