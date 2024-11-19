@@ -1,4 +1,4 @@
-import { QuickWallet } from 'quick-wallet';
+import QuickWallet from '../../core/api';
 
 const quickWallet = {
   name: "QuickWallet",

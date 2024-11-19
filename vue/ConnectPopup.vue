@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // @ts-nocheck
-
 import { ref, computed } from 'vue';
 
 import { showWalletConnect, useWalletConnection, useWalletConnectionOptions } from './composables';

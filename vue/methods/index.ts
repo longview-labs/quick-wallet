@@ -2,7 +2,7 @@
 
 import type { ArweaveHubWalletConnectionMethodName, ArweaveHubWalletConnectionMethod } from "../wallet.types.ts";
 import arConnect from "./ArConnect";
-import arweaveApp from "./ArweaveApp";
+import arweaveApp from "./ArweaveApp.js";
 import quickWallet from "./QuickWallet";
 
 const methods: Record<ArweaveHubWalletConnectionMethodName, ArweaveHubWalletConnectionMethod> = {

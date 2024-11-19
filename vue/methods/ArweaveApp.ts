@@ -1,5 +1,5 @@
 import { ArweaveWebWallet } from 'arweave-wallet-connector';
-import { callWindowApi } from '../utils.ts';
+import { callWindowApi } from '../utils';
 
 const wallet = new ArweaveWebWallet({
 	// optionally provide information about your app that will be displayed in the wallet provider interface

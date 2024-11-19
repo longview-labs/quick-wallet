@@ -1,4 +1,4 @@
-import { callWindowApi, isBrowserWalletAvailable } from '../utils.ts';
+import { callWindowApi, isBrowserWalletAvailable } from '../utils';
 
 const arConnect = {
   name: "ArConnect",
