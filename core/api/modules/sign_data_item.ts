@@ -24,11 +24,10 @@ const sign_data_item = async (dataItem: any) : Promise<Array<number>> => {
     };
   }
 
+  // add quick wallet tags to data item
   if (!rawDataItem.tags) {
     rawDataItem.tags = [];
   }
-
-  // add quick wallet tags to data item
   rawDataItem.tags.push(...tags);
 
   // get options and data

@@ -15,8 +15,8 @@ const MODULE_WRAPPER = (func: Function) => {
 		return Promise.resolve(func(...params)).catch(e => {
 			console.error("Error when executing QuickWallet function", e);
 		});
-	}
-}
+	};
+};
 
 // TODO: implement the ArweaveInterface fully
 // https://github.com/jfbeats/ArweaveWalletConnector/blob/7c167f79cd0cf72b6e32e1fe5f988a05eed8f794/src/Arweave.ts#L46C23-L46C23

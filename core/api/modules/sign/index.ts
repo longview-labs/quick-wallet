@@ -24,6 +24,6 @@ const sign = async (transaction: Transaction) : Promise<Transaction> => {
   freeDecryptedWallet(key);
 
   return transaction;
-}
+};
 
 export default sign;
