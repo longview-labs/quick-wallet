@@ -1,5 +1,7 @@
 import type { ArweaveInterface } from "./Arweave";
 
+// modular api design inspired by ArConnect
+// https://github.com/arconnectio/ArConnect/tree/production/src/api/modules
 import get_public_key from "./modules/get_public_key";
 import get_permissions from "./modules/get_permissions";
 import get_active_address from "./modules/get_active_address";
@@ -8,11 +10,7 @@ import signature from "./modules/signature";
 import sign_message from "./modules/sign_message";
 import sign from "./modules/sign";
 
-type ModuleFunction<ResultType> = (
-  ...params: any[]
-) => Promise<ResultType> | ResultType;
-
-const MODULE_WRAPPER = (func: ModuleFunction<any>) => {
+const MODULE_WRAPPER = (func: Function) => {
 	return (...params) : (Promise<any>) => {
 		return Promise.resolve(func(...params)).catch(e => {
 			console.error("Error when executing QuickWallet function", e);
@@ -22,7 +20,6 @@ const MODULE_WRAPPER = (func: ModuleFunction<any>) => {
 
 // TODO: implement the ArweaveInterface fully
 // https://github.com/jfbeats/ArweaveWalletConnector/blob/7c167f79cd0cf72b6e32e1fe5f988a05eed8f794/src/Arweave.ts#L46C23-L46C23
-
 const QuickWallet : ArweaveInterface = {
 	connect: MODULE_WRAPPER(get_public_key),
 	signDataItem: MODULE_WRAPPER(sign_data_item),

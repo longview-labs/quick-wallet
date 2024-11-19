@@ -2,12 +2,14 @@ import  { createData, ArweaveSigner } from "warp-arbundles/build/web/esm";
 
 import { getKeyfile } from "../../accounts";
 import { freeDecryptedWallet } from "../../accounts/encryption";
+import { tags } from "../tags";
 
 import { isArrayBuffer } from "../../utils";
 
 const sign_data_item = async (dataItem: any) : Promise<Array<number>> => {
   let rawDataItem;
 
+  // validate data item
   if (typeof dataItem.data !== "string") {
     isArrayBuffer(dataItem.data);
 
@@ -21,6 +23,13 @@ const sign_data_item = async (dataItem: any) : Promise<Array<number>> => {
       data: Array.from(new TextEncoder().encode(dataItem.data))
     };
   }
+
+  if (!rawDataItem.tags) {
+    rawDataItem.tags = [];
+  }
+
+  // add quick wallet tags to data item
+  rawDataItem.tags.push(...tags);
 
   // get options and data
   const { data, ...options } = rawDataItem;
