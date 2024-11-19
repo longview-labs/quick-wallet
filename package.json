@@ -4,22 +4,24 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prepare": "npm run build",
     "dev": "vue-tsc --watch",
     "build": "vue-tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "arweave": "^1.14.4",
+    "arweave-wallet-connector": "^1.0.2",
     "store": "^2.0.12",
     "typescript": "^5.4.5",
     "warp-arbundles": "^1.0.4"
   },
   "devDependencies": {
     "@types/node": "^20.12.13",
+    "@vue/tsconfig": "^0.6.0",
     "vue-tsc": "^2.1.10"
   },
   "peerDependencies": {

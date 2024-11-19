@@ -11,7 +11,7 @@ import sign_message from "./modules/sign_message";
 import sign from "./modules/sign";
 
 const MODULE_WRAPPER = (func: Function) => {
-	return (...params) : (Promise<any>) => {
+	return (...params: any[]) : (Promise<any>) => {
 		return Promise.resolve(func(...params)).catch(e => {
 			console.error("Error when executing QuickWallet function", e);
 		});
