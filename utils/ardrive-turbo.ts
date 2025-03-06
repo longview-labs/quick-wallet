@@ -20,7 +20,5 @@ export const uploadData = async (data: Buffer, jwk: JWKInterface, tags: Tag[]=[]
   });
 
   const uploadResult = await res.json();
-  console.log(uploadResult);
-
   return uploadResult;
 }
