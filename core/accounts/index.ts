@@ -2,7 +2,7 @@ import type { JWKInterface } from "arweave/web/lib/wallet";
 import Arweave from "arweave/web/common";
 import store from 'store';
 
-import { encryptWallet, decryptWallet, freeDecryptedWallet } from './encryption';
+import { encryptWallet, decryptWallet, freeDecryptedWallet, sha256Hash } from './encryption';
 import { uploadData } from "../../utils/ardrive-turbo";
 
 export const DECRYPTION_KEY = "test1234@";
@@ -97,7 +97,11 @@ export const generateAccount = async (username: string, password: string) : Prom
   const { address, keyfile } = account;
 
   // upload encrypted keyfile to Arweave
-  const tx = await uploadData(Buffer.from(keyfile), jwk, []);
+  const username_hash = await sha256Hash(username);
+  const tags = [{ name: "QuickWallet-User", value: username_hash }];
+  const tx = await uploadData(Buffer.from(keyfile), jwk, tags);
+
+  console.log(tx);
 
   // free wallet in memory for security reason
   freeDecryptedWallet(jwk);
