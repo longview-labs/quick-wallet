@@ -5,13 +5,13 @@
     "target": "es6",
     "moduleResolution": "bundler",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true
   },
   "include": [
-    "./**/*"
+    "./src/**/*"
   ],
   "exclude": [
-    "./node_modules",
-    "./vue_old"
+    "**/node_modules"
   ],
 }

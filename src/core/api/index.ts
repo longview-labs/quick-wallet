@@ -14,6 +14,7 @@ const MODULE_WRAPPER = (func: Function) => {
 	return (...params: any[]) : (Promise<any>) => {
 		return Promise.resolve(func(...params)).catch(e => {
 			console.error("Error when executing QuickWallet function", e);
+			throw e;
 		});
 	};
 };
