@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "bundler",
+    "sourceMap": true,
+    "outDir": "dist",
+    "declaration": true
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "**/node_modules"
+  ],
+}
