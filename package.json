@@ -6,8 +6,8 @@
   "module": "./dist/quick-wallet.esm.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "lint": "eslint --ext .ts src/",
-    "lint:fix": "eslint --ext .ts --fix src/",
+    "lint": "eslint --ext .ts,.mjs ./",
+    "lint:fix": "eslint --ext .ts,.mjs --fix ./",
     "start": "rollup -c rollup.config.mjs -w",
     "build": "rollup -c rollup.config.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
