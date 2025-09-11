@@ -1,6 +1,6 @@
 {
   "name": "quick-wallet",
-  "version": "0.6.1-beta.3",
+  "version": "0.6.2",
   "description": "",
   "main": "./dist/quick-wallet.cjs.js",
   "module": "./dist/quick-wallet.esm.js",

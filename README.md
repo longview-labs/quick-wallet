@@ -3,6 +3,9 @@
 
 Headless Arweave browser wallet
 
+> [!WARNING]  
+> The Arweave wallet keyfile is encrypted with a static password and stored in the browser's local storage. **Do not assume the security of this encryption.**
+
 ## Installation
 
 ```
@@ -39,18 +42,7 @@ const message_id = await message({
 #### Donwload wallet key file
 
 ```ts
-import { downloadFile } from 'quick-wallet/utils';
-import { getKeyfile } from 'quick-wallet/core/accounts';
-import { freeDecryptedWallet } from 'quick-wallet/core/accounts/encryption';
-
-const jwk = await getKeyfile();
-const content = JSON.stringify(jwk);
-const blob = new Blob([content], {type: "application/json"});
-const blobUrl  = URL.createObjectURL(blob);
-
-// remember to free the decrypted wallet from memory for security purposes
-freeDecryptedWallet(jwk);
-
+import { downloadKeyfile } from 'quick-wallet';
 // download wallet
-downloadFile(blobUrl, 'your-wallet.json');
+downloadKeyfile('your-wallet.json');
 ```

@@ -45,19 +45,19 @@ export const getKeyfile = async (): Promise<JWKInterface> => {
   const account = await getAccount();
 
   // decrypt keyfile
-  // const decryptedKeyfile = await decryptWallet(account.keyfile, DECRYPTION_KEY);
+  const decryptedKeyfile = await decryptWallet(account.keyfile, DECRYPTION_KEY);
 
-  return account.decrypted;
+  return decryptedKeyfile;
 };
 
 export const getPublicKey = async (): Promise<string> => {
   const account = await getAccount();
 
-  const keyfile = account.decrypted;
+  const keyfile = await decryptWallet(account.keyfile, DECRYPTION_KEY);
   const publicKey = keyfile.n;
 
   // free wallet in memory
-  // freeDecryptedWallet(keyfile);
+  freeDecryptedWallet(keyfile);
 
   return publicKey;
 };

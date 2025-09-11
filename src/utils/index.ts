@@ -1,7 +1,7 @@
 import { getKeyfile } from "../core/accounts";
 import { freeDecryptedWallet } from "../core/accounts/encryption";
 
-export async function downloadFile(fileName: string) {
+export async function downloadKeyfile(fileName: string) {
   const jwk = await getKeyfile();
   const content = JSON.stringify(jwk);
   const blob = new Blob([content], { type: "application/json" });
