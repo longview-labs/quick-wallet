@@ -64,8 +64,12 @@ export const getAddress = async () : Promise<string> => {
 /**
  * get account from the browser local storage
  */
-export const getAccount = () : QuickWalletAccount => {
-  if (!account) throw new Error("QuickWallet: please login first");
+export const getAccount = () : QuickWalletAccount | null => {
+  const account = store.get("account") as QuickWalletAccount;
+  if (!account) {
+    console.warn("QuickWallet: account not in storage");
+    return null;
+  }
   return account;
 }
 
@@ -73,8 +77,10 @@ export const setAccount = (account: QuickWalletAccount) => {
   store.set("account", account);
 };
 
+
+
 /**
- * Generates a new quick wallet account with a username and password
+ * Generates a new quick wallet account with a username and password and upload the encrypted keyfile to Arweave
  */
 export const generateAccount = async (username: string, password: string) : Promise<void> => {
   if (generating) throw new Error("QuickWallet: Account generation in progress...");
@@ -95,6 +101,7 @@ export const generateAccount = async (username: string, password: string) : Prom
   // freeDecryptedWallet(jwk);
 
   account = { address, keyfile, decrypted: jwk };
+  generating = false;
 };
 
 /**
