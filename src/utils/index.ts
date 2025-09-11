@@ -1,4 +1,14 @@
-export function downloadFile(blobUrl: string, fileName: string) {
+import { getKeyfile } from "../core/accounts";
+import { freeDecryptedWallet } from "../core/accounts/encryption";
+
+export async function downloadFile(fileName: string) {
+  const jwk = await getKeyfile();
+  const content = JSON.stringify(jwk);
+  const blob = new Blob([content], { type: "application/json" });
+  const blobUrl = URL.createObjectURL(blob);
+
+  freeDecryptedWallet(jwk);
+
   // create element that downloads the virtual file
   const el = document.createElement("a");
 
