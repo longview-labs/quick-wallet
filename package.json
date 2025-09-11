@@ -1,6 +1,6 @@
 {
   "name": "quick-wallet",
-  "version": "0.6.0",
+  "version": "0.6.1-beta.3",
   "description": "",
   "main": "./dist/quick-wallet.cjs.js",
   "module": "./dist/quick-wallet.esm.js",
@@ -11,7 +11,7 @@
     "start": "rollup -c rollup.config.mjs -w",
     "build": "rollup -c rollup.config.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "npm run build"
+    "release": "npm run build && npm publish --access public"
   },
   "keywords": [],
   "author": "",
