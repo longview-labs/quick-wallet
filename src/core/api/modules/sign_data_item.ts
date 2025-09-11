@@ -1,4 +1,4 @@
-import  { createData, ArweaveSigner } from "warp-arbundles/build/web/esm";
+import { createData, ArweaveSigner } from "warp-arbundles/build/web/esm";
 
 import { getKeyfile } from "../../accounts";
 import { freeDecryptedWallet } from "../../accounts/encryption";
@@ -6,7 +6,7 @@ import { tags } from "../tags";
 
 import { isArrayBuffer } from "../../utils";
 
-const sign_data_item = async (dataItem: any) : Promise<Array<number>> => {
+const sign_data_item = async (dataItem): Promise<Array<number>> => {
   let rawDataItem;
 
   // validate data item
@@ -15,12 +15,12 @@ const sign_data_item = async (dataItem: any) : Promise<Array<number>> => {
 
     rawDataItem = {
       ...dataItem,
-      data: Array.from(dataItem.data)
+      data: Array.from(dataItem.data),
     };
   } else {
     rawDataItem = {
       ...dataItem,
-      data: Array.from(new TextEncoder().encode(dataItem.data))
+      data: Array.from(new TextEncoder().encode(dataItem.data)),
     };
   }
 
@@ -47,6 +47,6 @@ const sign_data_item = async (dataItem: any) : Promise<Array<number>> => {
   freeDecryptedWallet(keyfile);
 
   return Array.from<number>(dataEntry.getRaw());
-}
+};
 
 export default sign_data_item;

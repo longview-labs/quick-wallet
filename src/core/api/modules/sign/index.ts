@@ -6,12 +6,12 @@ import type Transaction from "arweave/web/lib/transaction";
 import { getKeyfile } from "../../../accounts";
 import { freeDecryptedWallet } from "../../../accounts/encryption";
 
-const sign = async (transaction: Transaction) : Promise<Transaction> => {
+const sign = async (transaction: Transaction): Promise<Transaction> => {
   // TODO: add custom gateway config
   const arweave = new Arweave({
     host: "arweave.net",
     port: 443,
-    protocol: "https"
+    protocol: "https",
   });
 
   // get keyfile

@@ -17,14 +17,14 @@ const IV_LENGTH = 12;
 async function deriveKey(
   password: string,
   salt: BufferSource,
-  keyUsages: KeyUsage[]
+  keyUsages: KeyUsage[],
 ) {
   const passwordKey = await window.crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(password),
     "PBKDF2",
     false,
-    ["deriveKey"]
+    ["deriveKey"],
   );
 
   const key = await window.crypto.subtle.deriveKey(
@@ -32,12 +32,12 @@ async function deriveKey(
       name: "PBKDF2",
       salt,
       iterations: 250000,
-      hash: "SHA-256"
+      hash: "SHA-256",
     },
     passwordKey,
     { name: "AES-GCM", length: 256 },
     false,
-    keyUsages
+    keyUsages,
   );
 
   return key;
@@ -62,17 +62,17 @@ export async function encryptWallet(wallet: JWKInterface, password: string) {
   const encrypted = await window.crypto.subtle.encrypt(
     {
       name: "AES-GCM",
-      iv
+      iv,
     },
     key,
-    new TextEncoder().encode(JSON.stringify(wallet))
+    new TextEncoder().encode(JSON.stringify(wallet)),
   );
   const data = new Uint8Array(encrypted);
 
   // construct the encrypted data + info that we need for decryption
   const buffer = new Uint8Array(
     // encrypted data + iv + salt
-    iv.byteLength + salt.byteLength + data.byteLength
+    iv.byteLength + salt.byteLength + data.byteLength,
   );
 
   // add data to the buffer
@@ -115,10 +115,10 @@ export async function decryptWallet(wallet: string, password: string) {
   const decrypted = await window.crypto.subtle.decrypt(
     {
       name: "AES-GCM",
-      iv
+      iv,
     },
     key,
-    data
+    data,
   );
 
   // construct JWK

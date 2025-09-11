@@ -4,9 +4,9 @@ import { freeDecryptedWallet } from "../../accounts/encryption";
 import { isArrayBuffer } from "../../utils";
 
 const sign_message = async (
-  data: any,
-  options = { hashAlgorithm: "SHA-256" }
-) : Promise<number[]> => {
+  data,
+  options = { hashAlgorithm: "SHA-256" },
+): Promise<number[]> => {
   isArrayBuffer(data);
 
   const signData = Object.values(data);
@@ -17,7 +17,10 @@ const sign_message = async (
   const dataToSign = new Uint8Array(signData);
 
   // hash the message
-  const hash = await window.crypto.subtle.digest(options.hashAlgorithm, dataToSign);
+  const hash = await window.crypto.subtle.digest(
+    options.hashAlgorithm,
+    dataToSign,
+  );
 
   // get signing key using the jwk
   const cryptoKey = await window.crypto.subtle.importKey(
@@ -25,10 +28,10 @@ const sign_message = async (
     keyfile,
     {
       name: "RSA-PSS",
-      hash: options.hashAlgorithm
+      hash: options.hashAlgorithm,
     },
     false,
-    ["sign"]
+    ["sign"],
   );
 
   // hashing 2 times ensures that the app is not draining the user's wallet
@@ -36,7 +39,7 @@ const sign_message = async (
   const signature = await window.crypto.subtle.sign(
     { name: "RSA-PSS", saltLength: 32 },
     cryptoKey,
-    hash
+    hash,
   );
 
   // remove wallet from memory

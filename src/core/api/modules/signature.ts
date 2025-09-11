@@ -1,10 +1,7 @@
 import { getKeyfile } from "../../accounts";
 import { freeDecryptedWallet } from "../../accounts/encryption";
 
-const signature = async (
-  data: any,
-  algorithm: any
-) : Promise<number[]> => {
+const signature = async (data, algorithm): Promise<number[]> => {
   const keyfile = await getKeyfile();
 
   const cryptoKey = await window.crypto.subtle.importKey(
@@ -13,18 +10,22 @@ const signature = async (
     {
       name: "RSA-PSS",
       hash: {
-        name: "SHA-256"
-      }
+        name: "SHA-256",
+      },
     },
     false,
-    ["sign"]
+    ["sign"],
   );
 
   // uint8array data to sign
   const dataToSign = new Uint8Array(data);
 
   // grab signature
-  const signature = await window.crypto.subtle.sign(algorithm, cryptoKey, dataToSign);
+  const signature = await window.crypto.subtle.sign(
+    algorithm,
+    cryptoKey,
+    dataToSign,
+  );
 
   // remove wallet from memory
   freeDecryptedWallet(keyfile);

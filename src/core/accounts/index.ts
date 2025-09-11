@@ -1,29 +1,35 @@
 import type { JWKInterface } from "arweave/web/lib/wallet";
 import Arweave from "arweave/web/common";
-import store from 'store';
+import store from "store";
 
-import { encryptWallet, decryptWallet, freeDecryptedWallet, sha256Hash } from './encryption';
+import {
+  encryptWallet,
+  decryptWallet,
+  freeDecryptedWallet,
+  sha256Hash,
+} from "./encryption";
 import { fetchEncryptedKeyfile } from "./query";
 import { uploadData } from "../../utils/ardrive-turbo";
 
 export const DECRYPTION_KEY = "test1234@";
 
 export interface QuickWalletAccount {
-  address: string,
-  keyfile: string,
-  decrypted?: JWKInterface,
+  address: string;
+  keyfile: string;
+  decrypted?: JWKInterface;
 
   /** @deprecated backedup field deprecated */
-  backedup?: boolean,
-};
+  backedup?: boolean;
+}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let account: QuickWalletAccount | null = null;
 let generating = false;
 
 const arweave = new Arweave({
   host: "arweave.net",
   port: 443,
-  protocol: "https"
+  protocol: "https",
 });
 
 /**
@@ -35,8 +41,8 @@ const arweave = new Arweave({
  * from the memory, after it is no longer needed, using the
  * "freeDecryptedWallet(activekeyfile.keyfile)" function.
  */
-export const getKeyfile = async () : Promise<JWKInterface> => {
-  let account = getAccount();
+export const getKeyfile = async (): Promise<JWKInterface> => {
+  const account = await getAccount();
 
   // decrypt keyfile
   // const decryptedKeyfile = await decryptWallet(account.keyfile, DECRYPTION_KEY);
@@ -44,8 +50,8 @@ export const getKeyfile = async () : Promise<JWKInterface> => {
   return account.decrypted;
 };
 
-export const getPublicKey = async () : Promise<string> => {
-  let account = getAccount();
+export const getPublicKey = async (): Promise<string> => {
+  const account = await getAccount();
 
   const keyfile = account.decrypted;
   const publicKey = keyfile.n;
@@ -56,34 +62,68 @@ export const getPublicKey = async () : Promise<string> => {
   return publicKey;
 };
 
-export const getAddress = async () : Promise<string> => {
-  let account = getAccount();
+export const getAddress = async (): Promise<string> => {
+  const account = await getAccount();
   return account.address;
 };
 
 /**
  * get account from the browser local storage
  */
-export const getAccount = () : QuickWalletAccount | null => {
+export const getAccount = async (): Promise<QuickWalletAccount> => {
   const account = store.get("account") as QuickWalletAccount;
   if (!account) {
-    console.warn("QuickWallet: account not in storage");
-    return null;
+    const account = await generateTempAccount();
+    return account;
   }
   return account;
-}
+};
 
 export const setAccount = (account: QuickWalletAccount) => {
   store.set("account", account);
 };
 
+export const createAccountWithWallet = async (
+  wallet: JWKInterface,
+): Promise<QuickWalletAccount> => {
+  const address = await arweave.wallets.jwkToAddress(wallet);
+  const keyfile = await encryptWallet(wallet, DECRYPTION_KEY);
 
+  // construct wallet account
+  const account = {
+    address,
+    keyfile,
+  };
+
+  // save account info to storage
+  setAccount(account);
+
+  return account;
+};
+
+export const generateTempAccount = async (): Promise<QuickWalletAccount> => {
+  if (generating)
+    throw new Error("QuickWallet: Account generation in progress...");
+
+  generating = true;
+  const jwk = await arweave.wallets.generate();
+  const account = await createAccountWithWallet(jwk);
+
+  // free wallet in memory for security reason
+  freeDecryptedWallet(jwk);
+
+  return account;
+};
 
 /**
  * Generates a new quick wallet account with a username and password and upload the encrypted keyfile to Arweave
  */
-export const generateAccount = async (username: string, password: string) : Promise<void> => {
-  if (generating) throw new Error("QuickWallet: Account generation in progress...");
+export const generateAccount = async (
+  username: string,
+  password: string,
+): Promise<void> => {
+  if (generating)
+    throw new Error("QuickWallet: Account generation in progress...");
 
   generating = true;
   const jwk = await arweave.wallets.generate();
@@ -107,7 +147,10 @@ export const generateAccount = async (username: string, password: string) : Prom
 /**
  * Fetch and decrypt the keyfile from Arweave using username and password
  */
-export const loginAccount = async (username: string, password: string) : Promise<void> => {
+export const loginAccount = async (
+  username: string,
+  password: string,
+): Promise<void> => {
   // get username
   const username_hash = await sha256Hash(username);
 

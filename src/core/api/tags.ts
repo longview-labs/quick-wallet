@@ -9,6 +9,6 @@ export const tags = [
   { name: "Signing-Client", value: "QuickWallet" },
   {
     name: "Signing-Client-Version",
-    value: version
-  }
+    value: version,
+  },
 ];

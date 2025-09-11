@@ -51,14 +51,16 @@ export const fetchEncryptedKeyfile = async (username_hash: string) => {
     },
     body: JSON.stringify({
       query,
-      variables: { hash: username_hash }
+      variables: { hash: username_hash },
     }),
-  }).then((res) => res.json())
+  }).then((res) => res.json());
 
   const tx = response.data.transactions.edges[0].node;
   if (!tx) throw new Error("QuickWallet: User not found");
 
   const { id } = tx;
-  const keyfile = await fetch(`https://arweave.net/${id}`).then((res) => res.text());
+  const keyfile = await fetch(`https://arweave.net/${id}`).then((res) =>
+    res.text(),
+  );
   return keyfile;
-}
+};

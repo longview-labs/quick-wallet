@@ -1,7 +1,4 @@
-export function downloadFile(
-  blobUrl: string,
-  fileName: string
-) {
+export function downloadFile(blobUrl: string, fileName: string) {
   // create element that downloads the virtual file
   const el = document.createElement("a");
 
@@ -12,9 +9,9 @@ export function downloadFile(
   document.body.appendChild(el);
   el.click();
   document.body.removeChild(el);
-};
+}
 
-export const shortAddr = (address: string, first=5) => {
+export const shortAddr = (address: string, first = 5) => {
   const lastChars = address.slice(-4);
   const firstChars = address.slice(0, first);
 
