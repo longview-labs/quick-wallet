@@ -11,7 +11,7 @@ export const DECRYPTION_KEY = "test1234@";
 export interface QuickWalletAccount {
   address: string,
   keyfile: string,
-  descrypted?: JWKInterface,
+  decrypted?: JWKInterface,
 
   /** @deprecated backedup field deprecated */
   backedup?: boolean,
@@ -41,13 +41,13 @@ export const getKeyfile = async () : Promise<JWKInterface> => {
   // decrypt keyfile
   // const decryptedKeyfile = await decryptWallet(account.keyfile, DECRYPTION_KEY);
 
-  return account.descrypted;
+  return account.decrypted;
 };
 
 export const getPublicKey = async () : Promise<string> => {
   let account = getAccount();
 
-  const keyfile = account.descrypted;
+  const keyfile = account.decrypted;
   const publicKey = keyfile.n;
 
   // free wallet in memory
@@ -94,7 +94,7 @@ export const generateAccount = async (username: string, password: string) : Prom
   // free wallet in memory for security reason
   // freeDecryptedWallet(jwk);
 
-  account = { address, keyfile, descrypted: jwk };
+  account = { address, keyfile, decrypted: jwk };
 };
 
 /**
@@ -112,5 +112,5 @@ export const loginAccount = async (username: string, password: string) : Promise
   const address = await arweave.wallets.jwkToAddress(jwk);
 
   // set account
-  account = { address, keyfile, descrypted: jwk };
+  account = { address, keyfile, decrypted: jwk };
 };
