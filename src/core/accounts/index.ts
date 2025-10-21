@@ -1,5 +1,5 @@
 import type { JWKInterface } from "arweave/web/lib/wallet";
-import Arweave from "arweave/web/common";
+import Arweave from "arweave/web";
 import store from "store";
 
 import {
