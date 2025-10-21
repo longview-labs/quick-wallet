@@ -54,11 +54,17 @@ export default [
   // Browser build - bundle everything (include nodeResolve + commonjs + polyfills)
   {
     input: "src/index.ts",
-    output: {
-      file: "dist/quick-wallet.browser.js",
-      format: "iife",
-      name: "QuickWallet",
-    },
+    output: [
+      {
+        file: "dist/quick-wallet.browser.js",
+        format: "iife",
+        name: "QuickWallet",
+      },
+      {
+        file: "dist/quick-wallet.browser.esm.js",
+        format: "es",
+      },
+    ],
     plugins: [
       ...commonPlugins,
       nodeResolve({ browser: true, preferBuiltins: false }),
